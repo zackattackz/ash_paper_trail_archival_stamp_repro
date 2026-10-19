@@ -66,7 +66,10 @@ versions after Ash.destroy!(doc, actor: dana): [
 ]
 
 Assertion with == failed
-code:  assert archived.user_id == dana.id
+code:  assert Map.take(archived, [:user_id, :version_action_name]) ==
+         %{user_id: dana.id, version_action_name: :destroy}
+left:  %{user_id: "<sam>", version_action_name: :create}
+right: %{user_id: "<dana>", version_action_name: :destroy}
 ```
 
 The second test archives with an ordinary update action that sets

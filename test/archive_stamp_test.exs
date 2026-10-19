@@ -52,8 +52,11 @@ defmodule Repro.ArchiveStampTest do
     assert created.user_id == sam.id
     assert archived.from == @archived_at
     assert archived.archived_at == @archived_at
-    assert archived.user_id == dana.id
-    assert archived.version_action_name == :destroy
+
+    # Who archived it, and through which action. (`version_action_type` is left
+    # out: `:temporal_inline` only allows `:create` and `:update` there.)
+    assert Map.take(archived, [:user_id, :version_action_name]) ==
+             %{user_id: dana.id, version_action_name: :destroy}
   end
 
   test "works: the same archive as an update action", %{sam: sam, dana: dana, doc: doc} do
